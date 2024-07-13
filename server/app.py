@@ -26,8 +26,6 @@ resource_fields = {
     "address": fields.String
 }
 
-
-
 class Restaurants(Resource):
     @app.route("/restaurants")
     def get(self):
@@ -44,9 +42,9 @@ class Restaurants(Resource):
 
     def delete(self, restaurant_id):
         del restaurants[restaurant_id]
+        db.session.delete(restaurant_id)
+        db.session.commit()
         return '', 204
-api.add_resource(Restaurants, "/restaurants")
-      
 
 pizza_fields = {
     "id": fields.Integer,
@@ -65,7 +63,7 @@ class Pizzas(Resource):
         result = Pizza.query.filter_by(id=pizza_id).first()
         if not result:
             abort(404, message="Could not find pizza with that id")
-        return result
+        return result 
 
 
 restaurant_pizza_fields = {
